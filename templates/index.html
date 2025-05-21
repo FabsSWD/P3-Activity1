@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+
+{% block title %}Catálogo - Biblioteca Virtual{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Catálogo de Libros</h1>
+
+<form method="get" class="mb-4">
+  <div class="input-group">
+    <input type="text" name="q" class="form-control" placeholder="Buscar por título, autor o categoría" value="{{ query or '' }}">
+    <button class="btn btn-outline-primary" type="submit">Buscar</button>
+  </div>
+</form>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+  {% for libro in libros %}
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">{{ libro.titulo }}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">{{ libro.autor }} ({{ libro.anio or 's/f' }})</h6>
+          <p class="card-text">
+            {{ libro.sinopsis[:120] }}{% if libro.sinopsis|length > 120 %}...{% endif %}
+          </p>
+          <span class="badge {{ 'bg-success' if libro.disponible else 'bg-danger' }}">
+            {{ 'Disponible' if libro.disponible else 'No disponible' }}
+          </span>
+        </div>
+        <div class="card-footer text-end">
+          <a href="{{ url_for('main.libro_detalle', libro_id=libro.id) }}" class="btn btn-primary btn-sm">Ver más</a>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+{% if not libros %}
+  <div class="alert alert-info mt-4 text-center">
+    No se encontraron libros con ese criterio de búsqueda.
+  </div>
+{% endif %}
+{% endblock %}

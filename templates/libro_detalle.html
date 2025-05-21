@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+
+{% block title %}{{ libro.titulo }} - Detalle{% endblock %}
+
+{% block content %}
+<h2 class="mb-3">{{ libro.titulo }}</h2>
+<h5 class="text-muted">{{ libro.autor }} ({{ libro.anio or 's/f' }})</h5>
+<p class="mt-4"><strong>Categoría:</strong> {{ libro.categoria or 'Sin categoría' }}</p>
+<p><strong>Disponibilidad:</strong> 
+  <span class="badge {{ 'bg-success' if libro.disponible else 'bg-danger' }}">
+    {{ 'Disponible' if libro.disponible else 'No disponible' }}
+  </span>
+</p>
+<hr>
+<h4>Sinopsis</h4>
+<p>{{ libro.sinopsis or 'Sin sinopsis disponible.' }}</p>
+
+<a href="{{ url_for('main.index') }}" class="btn btn-secondary mt-3">← Volver al catálogo</a>
+{% endblock %}
